@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Поиск торрента...</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    text-align: center;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.sub {
+    color: #94a3b8;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: #1e293b;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #22c55e, #4ade80);
+    transition: width 1s linear;
+}
+
+.timer {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.offer {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 25px 0;
+}
+
+.offer h2 {
+    margin-top: 0;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #22c55e;
+    color: #000;
+    font-weight: bold;
+}
+
+.btn-secondary {
+    background: #334155;
+    color: #fff;
+}
+
+.hidden {
+    display: none;
+}
+
+.features {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.features li {
+    margin: 8px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🔍 Ищем быстрый торрент...</h1>
+    <div class="sub" id="statusText">Проверяем источники и безопасность файла</div>
+
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="timer">
+        Осталось: <span id="time">10</span> сек
+    </div>
+
+    <div class="offer">
+        <h2>💰 Получи до 800₽ на телефон</h2>
+        <p>Установи браузер и получи бонус + безопасные загрузки</p>
+
+        <button class="btn btn-primary" onclick="window.open('https://yandex.ru/project/browser/bonus/multioffer/affiliate_4prod?source=pWRP8eS1VsC2X59560&partner_string=P89XvN11U6RuE47077&cliddbro=14033903&clidmbro=14033897&cliddefault=14033911&clidpp=14181285&clckid=2ac2a043', '_blank')">
+            Получить до 800₽
+        </button>
+    </div>
+
+    <div class="features">
+        <ul>
+            <li>🛡 Проверка сайтов перед скачиванием</li>
+            <li>⚡ Быстрая загрузка файлов</li>
+            <li>🔒 Защита от вредоносных файлов</li>
+        </ul>
+    </div>
+
+    <button id="downloadBtn" class="btn btn-secondary hidden">
+        ⬇ Скачать торрент
+    </button>
+
+</div>
+
+<script>
+function getParam(name) {
+    const url = new URL(window.location.href);
+    return url.searchParams.get(name);
+}
+
+// Получаем tid
+let tid = getParam("tid");
+
+// Валидация
+if (!tid || isNaN(tid)) {
+    document.getElementById("statusText").innerText = "Ошибка: неверная ссылка";
+    throw new Error("Invalid tid");
+}
+
+// Таймер
+let time = 10;
+let progress = 0;
+
+const timeEl = document.getElementById("time");
+const progressEl = document.getElementById("progress");
+const btn = document.getElementById("downloadBtn");
+const statusText = document.getElementById("statusText");
+
+// Этапы "поиска"
+const steps = [
+    "🔍 Поиск быстрых источников...",
+    "⚡ Проверка скорости загрузки...",
+    "🛡 Проверка безопасности файла...",
+    "📦 Подготовка ссылки..."
+];
+
+let stepIndex = 0;
+
+const interval = setInterval(() => {
+    time--;
+    progress += 10;
+
+    timeEl.textContent = time;
+    progressEl.style.width = progress + "%";
+
+    // Меняем текст каждые ~3 секунды
+    if (time % 3 === 0 && stepIndex < steps.length) {
+        statusText.innerText = steps[stepIndex];
+        stepIndex++;
+    }
+
+    if (time <= 0) {
+        clearInterval(interval);
+
+        statusText.innerText = "✅ Готово! Можно скачивать";
+
+        const torrentLink = `https://small.info/getTorrents.php?gid=${tid}&direct=1`;
+
+        btn.classList.remove("hidden");
+
+        btn.onclick = () => {
+            window.location.href = torrentLink;
+        };
+    }
+
+}, 1000);
+</script>
+
+</body>
+</html>
