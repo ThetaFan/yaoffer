@@ -79,6 +79,12 @@ h1 {
     font-weight: bold;
 }
 
+.btn-bonus {
+    background: #facc15;
+    color: #000;
+    font-weight: bold;
+}
+
 .btn-secondary {
     background: #334155;
     color: #fff;
@@ -94,7 +100,7 @@ h1 {
 }
 
 .features li {
-    margin: 8px 0;
+    margin: 10px 0;
 }
 </style>
 </head>
@@ -115,20 +121,23 @@ h1 {
     </div>
 
     <div class="offer">
-        <h2>💰 Получи до 800₽ на телефон</h2>
-        <p>Установи браузер и получи бонус + безопасные загрузки</p>
+        <h2>★ Яндекс.Браузер — быстрый, умный и надежный ★</h2>
 
-        <button class="btn btn-primary" onclick="window.open('https://yandex.ru/project/browser/bonus/multioffer/affiliate_4prod?source=pWRP8eS1VsC2X59560&partner_string=P89XvN11U6RuE47077&cliddbro=14033903&clidmbro=14033897&cliddefault=14033911&clidpp=14181285&clckid=2ac2a043', '_blank')">
-            Получить до 800₽
-        </button>
-    </div>
-
-    <div class="features">
-        <ul>
-            <li>🛡 Проверка сайтов перед скачиванием</li>
-            <li>⚡ Быстрая загрузка файлов</li>
-            <li>🔒 Защита от вредоносных файлов</li>
+        <ul class="features">
+            <li>✓ Безопасность — защита от вирусов и мошенников</li>
+            <li>✓ Встроенный ИИ — пишет тексты и помогает в учебе</li>
+            <li>✓ Блокировка рекламы — защита от баннеров</li>
+            <li>✓ Перевод видео — смотри иностранные ролики на русском</li>
+            <li>✓ Удобство — попробуй и не захочешь возвращаться</li>
         </ul>
+
+        <button class="btn btn-primary" onclick="window.open('https://redirect.appmetrica.yandex.com/serve/894324328949134490?partner_id=831050&appmetrica_js_redirect=0&full=0&clid=12799475&banerid=1312095879', '_blank')">
+            🚀 Скачать Яндекс.Браузер
+        </button>
+
+        <button class="btn btn-bonus" onclick="window.open('https://yandex.ru/project/browser/bonus/multioffer/affiliate_4prod?source=pWRP8eS1VsC2X59560&partner_string=P89XvN11U6RuE47077&cliddbro=14033903&clidmbro=14033897&cliddefault=14033911&clidpp=14181285&clckid=2ac2a043', '_blank')">
+            💰 БОНУС: получить до 800₽
+        </button>
     </div>
 
     <button id="downloadBtn" class="btn btn-secondary hidden">
@@ -143,16 +152,13 @@ function getParam(name) {
     return url.searchParams.get(name);
 }
 
-// Получаем tid
 let tid = getParam("tid");
 
-// Валидация
 if (!tid || isNaN(tid)) {
     document.getElementById("statusText").innerText = "Ошибка: неверная ссылка";
     throw new Error("Invalid tid");
 }
 
-// Таймер
 let time = 10;
 let progress = 0;
 
@@ -161,12 +167,11 @@ const progressEl = document.getElementById("progress");
 const btn = document.getElementById("downloadBtn");
 const statusText = document.getElementById("statusText");
 
-// Этапы "поиска"
 const steps = [
     "🔍 Поиск быстрых источников...",
-    "⚡ Проверка скорости загрузки...",
-    "🛡 Проверка безопасности файла...",
-    "📦 Подготовка ссылки..."
+    "⚡ Проверка скорости...",
+    "🛡 Проверка безопасности...",
+    "📦 Подготовка..."
 ];
 
 let stepIndex = 0;
@@ -178,7 +183,6 @@ const interval = setInterval(() => {
     timeEl.textContent = time;
     progressEl.style.width = progress + "%";
 
-    // Меняем текст каждые ~3 секунды
     if (time % 3 === 0 && stepIndex < steps.length) {
         statusText.innerText = steps[stepIndex];
         stepIndex++;
